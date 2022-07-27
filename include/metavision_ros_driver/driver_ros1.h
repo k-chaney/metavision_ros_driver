@@ -305,7 +305,7 @@ private:
     constexpr double f = 1.0 / (10e9);
     const double sensor_inc = dt_sensor - prevSensorTime_;
     const double alpha = std::min(sensor_inc * f, 0.1);
-    averageTimeDifference_ = averageTimeDifference_ * (1.0 - alpha) + alpha * dt;
+    averageTimeDifference_ = dt; // averageTimeDifference_ * (1.0 - alpha) + alpha * dt;
     prevSensorTime_ = dt_sensor;
     //
     // We want to use sensor time, but adjust it for the average clock
@@ -344,7 +344,7 @@ private:
       bufferingDelay_ = (int64_t)(lastROSTime_ + MIN_EVENT_DELTA_T) - (int64_t)trialTime;
     }
 
-    const uint64_t rosTimeOffset = rosT0_ + avg_timediff_int + bufferingDelay_;
+    const uint64_t rosTimeOffset = rosT0_ + avg_timediff_int; // + bufferingDelay_;
 
     return (rosTimeOffset);
   }
