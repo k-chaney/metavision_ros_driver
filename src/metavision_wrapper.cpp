@@ -142,7 +142,7 @@ void MetavisionWrapper::applyROI(const std::vector<int> & roi)
       cam_.roi().set(rects);
     }
   } else {
-    cam_.roi().unset();
+    // cam_.roi().unset();
 #ifdef CHECK_IF_OUTSIDE_ROI
     x_min_ = 0;
     x_max_ = std::numeric_limits<uint16_t>::max();

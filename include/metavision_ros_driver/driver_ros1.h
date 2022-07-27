@@ -120,7 +120,6 @@ public:
       config.bias_diff_on = wrapper_->getBias("bias_diff_on");
       config.bias_fo = wrapper_->getBias("bias_fo");
       config.bias_hpf = wrapper_->getBias("bias_hpf");
-      config.bias_pr = wrapper_->getBias("bias_pr");
       config.bias_refr = wrapper_->getBias("bias_refr");
       ROS_INFO("initialized config to camera biases");
     } else {
@@ -129,7 +128,6 @@ public:
       setBias(&config.bias_diff_on, "bias_diff_on");
       setBias(&config.bias_fo, "bias_fo");
       setBias(&config.bias_hpf, "bias_hpf");
-      setBias(&config.bias_pr, "bias_pr");
       setBias(&config.bias_refr, "bias_refr");
     }
     config_ = config;  // remember current values
@@ -622,7 +620,13 @@ void DriverROS1<event_array_msgs::EventArray>::triggerCallback(
       eventCount[e.p]++;
     }
     const int64_t lastEventTime = start[n - 1].t * 1000;
-    (void)sendMessageIfComplete(&state, lastEventTime, events.size() / 8);
+    //(void)sendMessageIfComplete(&state, lastEventTime, events.size() / 8);
+
+    wrapper_->updateEventsSent(events.size() / 8);
+    wrapper_->updateMsgsSent(1);
+    state.pub.publish(state.msg);
+    state.msg.reset();
+
   } else {
     // no subscribers: clear out unfinished message and gather event statistics
     state.msg.reset();

@@ -2,6 +2,7 @@
   <arg name="bias_file" default=""/>
   <node pkg="metavision_ros_driver" type="driver_node" name="event_cam_0" clear_params="true"
 	output="screen">
+    <param name="serial" value="Prophesee:hal_plugin_imx636_evk4:00050108"/>
     <param name="frame_id" value="event_cam_0"/>
     <param name="sync_mode" value="primary"/>
     <param name="event_message_time_threshold" value="0.0001"/>
@@ -15,9 +16,14 @@
     <param name="message_type" value="event_array"/>
     <!-- listen for ready message from cam 1 -->
     <remap from="~ready" to ="/event_cam_1/ready"/>
+    <param name="trigger_out_mode" value="disabled"/>
+    <param name="trigger_in_mode" value="external"/>
+    <rosparam command="load" file="$(find metavision_ros_driver)/config/stereo_trigger_pins.yaml"/>
   </node>
   <node pkg="metavision_ros_driver" type="driver_node" name="event_cam_1" clear_params="true"
 	output="screen">
+    <!-- param name="serial" value="CenturyArks:evc3a_plugin_gen31:00000299"/ -->
+    <param name="serial" value="Prophesee:hal_plugin_imx636_evk4:00050109"/>
     <param name="frame_id" value="event_cam_1"/>
     <param name="sync_mode" value="secondary"/>
     <param name="event_message_time_threshold" value="0.0001"/>
@@ -29,6 +35,8 @@
     <param name="use_multithreading" value="false"/>
     <!-- what kind of messages to write (dvs or prophesee, event_array) -->
     <param name="message_type" value="event_array"/>
-
+    <param name="trigger_out_mode" value="disabled"/>
+    <param name="trigger_in_mode" value="external"/>
+    <rosparam command="load" file="$(find metavision_ros_driver)/config/stereo_trigger_pins.yaml"/>
   </node>
 </launch>
